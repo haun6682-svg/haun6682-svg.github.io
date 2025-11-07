@@ -1,0 +1,81 @@
+<!doctype html>
+<div class="specials">
+<div class="card special">
+<h3>Mua 2 tặng 1 (Thứ 3 hàng tuần)</h3>
+<p class="muted">Áp dụng cho mọi loại trà sữa size M.</p>
+</div>
+<div class="card special">
+<h3>Combo ăn nhẹ</h3>
+<p class="muted">Trà + bánh crepe chỉ 69.000₫.</p>
+</div>
+</div>
+</section>
+
+
+<section id="order" style="margin-top:1.25rem">
+<h2>Đặt hàng nhanh</h2>
+<div style="display:grid;grid-template-columns:1fr;gap:1rem">
+<form class="card" onsubmit="return submitOrder(event)">
+<input id="customer" placeholder="Họ và tên" required>
+<input id="phone" placeholder="Số điện thoại" required>
+<select id="drink">
+<option>Trà sữa truyền thống - 35.000₫</option>
+<option>Trà sữa Matcha - 45.000₫</option>
+<option>Trà sữa Socola - 42.000₫</option>
+<option>Trà sữa đậu nành - 39.000₫</option>
+</select>
+<input id="note" placeholder="Ghi chú (độ ngọt, topping)...">
+<div style="display:flex;gap:.5rem">
+<button class="btn" type="submit">Gửi đơn</button>
+<button type="reset" style="border:1px solid rgba(11,19,32,0.06);background:white;border-radius:10px">Xóa</button>
+</div>
+<div id="orderMsg" style="color:var(--muted);margin-top:.5rem"></div>
+</form>
+
+
+<div class="card">
+<h3>Địa chỉ</h3>
+<p class="muted">Sơn đồng, Hà Nội</p>
+<h3 style="margin-top:1rem">Giờ mở cửa</h3>
+<p class="muted">Hằng ngày: 8:00 - 22:00</p>
+</div>
+</div>
+</section>
+
+
+</main>
+
+
+<footer>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding-top:1rem">
+<div class="muted">© Trà Sữa Hương Vị 2025</div>
+</div>
+</footer>
+</div>
+
+
+<script>
+// Mobile nav toggle
+const menuBtn = document.getElementById('menuBtn');
+const mobileNav = document.getElementById('mobileNav');
+menuBtn.addEventListener('click', ()=>{
+const open = mobileNav.style.display === 'block' ? false : true;
+mobileNav.style.display = open ? 'block' : 'none';
+menuBtn.setAttribute('aria-expanded', open);
+});
+
+
+// Simple order submit (no backend)
+function submitOrder(e){
+e.preventDefault();
+const name = document.getElementById('customer').value.trim();
+const phone = document.getElementById('phone').value.trim();
+const msg = document.getElementById('orderMsg');
+if(!name || !phone){ msg.textContent = 'Vui lòng nhập tên và số điện thoại.'; return false }
+msg.textContent = `Cám ơn ${name}! Đơn hàng của bạn đã được ghi nhận.`;
+e.target.reset();
+return false;
+}
+</script>
+</body>
+</html>

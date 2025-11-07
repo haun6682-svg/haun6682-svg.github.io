@@ -1,0 +1,111 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0%;
+    padding: 0%;
+    background-color: rgb(202, 221, 135);
+}
+a{
+    text-decoration: none;
+    color: rgb(18, 7, 68);
+}
+.box{
+    background-color: aqua;
+    padding: 20px;
+    margin: 3px;
+    border-radius: 4px;
+}
+.title{
+    color: blueviolet;
+    padding: 0%;
+    margin: 0%;
+}
+.btn{
+    padding: 10px;
+    background-color: azure;
+    color: black;
+    border-radius: 4px;
+    display: inline-block;
+    transition: background 0,3s;
+}
+.btn:hover{
+background-color: green;
+}
+#header{
+    background-color: blue;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+#header h1{
+    font-size: 50px;
+    margin: 0%;
+}
+#menu{
+    background-color: bisque;
+}
+#menu ul{
+    list-style: none;
+    margin: 0%;
+   padding: 0%;
+   display: flex;
+justify-content: center;
+}
+#menu ul li{ 
+    position: relative;
+}
+#menu ul li:hover{
+    background-color: green;
+}
+#menu ul li ul{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    background-color: antiquewhite;
+    min-width: 100%;
+    flex-direction: column;
+    z-index: 100%;
+}
+#menu ul li:hover ul{
+    display: flex;
+
+}
+#menu ul li ul li ul{
+    top: 0%;
+    left: 100%;
+}
+#main{
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+#content{
+    flex: 3;
+
+}
+#sidebar{
+    flex: 1;
+}
+#footer{
+    background-color: aqua;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px; 
+    flex: 0%;
+}
+#menu #menu1 li #menu2 li #menu3{
+    display: none;
+}
+#menu #menu1 li #menu2 li:hover #menu3{
+    display: flex;
+}
+#menu #menu1 li #menu2 li #menu4{
+    display: none;
+}
+#menu #menu1 li #menu2 li:hover #menu4{
+    display: flex;
+}
+
+
+

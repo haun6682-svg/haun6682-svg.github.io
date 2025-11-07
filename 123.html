@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<h3>Trà sữa trân châu đường đen</h3>
+<p>Vị ngọt dịu, trân châu mềm và đậm đà hương trà.</p>
+<div class="price">45.000₫</div>
+</div>
+<div class="menu-item">
+<img src="https://images.unsplash.com/photo-1551022376-50a48e5a3c81?auto=format&fit=crop&w=800&q=60" alt="Trà đào cam sả">
+<h3>Trà đào cam sả</h3>
+<p>Trà trái cây mát lạnh, hương thơm sả tươi đầy sảng khoái.</p>
+<div class="price">39.000₫</div>
+</div>
+<div class="menu-item">
+<img src="https://images.unsplash.com/photo-1532634896-26909d0d8f4b?auto=format&fit=crop&w=800&q=60" alt="Matcha latte">
+<h3>Matcha Latte</h3>
+<p>Matcha nguyên chất kết hợp sữa tươi thơm béo.</p>
+<div class="price">49.000₫</div>
+</div>
+<div class="menu-item">
+<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?auto=format&fit=crop&w=800&q=60" alt="Hồng trà kem cheese">
+<h3>Hồng trà kem cheese</h3>
+<p>Hòa quyện giữa vị trà đậm và lớp kem cheese béo ngậy.</p>
+<div class="price">50.000₫</div>
+</div>
+</div>
+</section>
+
+
+<section id="about">
+<h2>Giới thiệu về quán</h2>
+<div class="container about fade">
+<img src="https://images.unsplash.com/photo-1606312619345-89c3d9fb2b3e?auto=format&fit=crop&w=900&q=80" alt="Không gian quán trà sữa">
+<div class="about-text">
+<p>Trà Sữa Mơ Mộng ra đời từ niềm đam mê với hương vị trà truyền thống kết hợp cùng sự sáng tạo của giới trẻ. Không gian quán mang phong cách hiện đại, nhẹ nhàng, tạo cảm giác dễ chịu cho mọi khách hàng.</p>
+<p>Chúng tôi cam kết sử dụng nguyên liệu sạch, an toàn và luôn đổi mới menu theo mùa để đem lại trải nghiệm tốt nhất cho khách hàng.</p>
+</div>
+</div>
+</section>
+
+
+<section id="contact">
+<h2>Liên hệ & Đặt hàng</h2>
+<div class="container contact fade">
+<div class="contact-form">
+<input type="text" id="name" placeholder="Họ và tên" required>
+<input type="tel" id="phone" placeholder="Số điện thoại" required>
+<textarea id="message" placeholder="Nội dung đặt hàng hoặc lời nhắn" rows="5"></textarea>
+<button onclick="sendMessage()">Gửi ngay</button>
+</div>
+<div>
+<h3>Thông tin liên hệ</h3>
+<p>📍 123 Đường Hoa, Quận Cầu Giấy, Hà Nội</p>
+<p>📞 0123 456 789</p>
+<p>✉️ trasuamromong@example.com</p>
+<p>🌐 Facebook / Instagram: @trasuamromong</p>
+</div>
+</div>
+</section>
+
+
+<footer>
+<p>© 2025 Trà Sữa Mơ Mộng | Thiết kế bởi sinh viên CNTT</p>
+</footer>
+
+
+<script>
+function sendMessage() {
+const name = document.getElementById('name').value;
+const phone = document.getElementById('phone').value;
+const msg = document.getElementById('message').value;
+if(name && phone){
+alert(`Cảm ơn ${name}! Chúng tôi sẽ liên hệ với bạn sớm qua số ${phone}.`);
+} else {
+alert('Vui lòng nhập đầy đủ thông tin!');
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>học menu đa cấp và bộ chọn id, class</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="header">
+        <h1>học class và id</h1>
+     <p>kết hợp và sử dụng menu đa cấp</p>
+    </div>
+    <div id="menu">
+<ul id="menu1">
+    <li><a href="">Trang chủ</a></li>
+    <li><a href="">Sản phẩm</a>
+    <ul id="menu2">
+        <li><a href="">Điện thoại</a></li>
+        <ul id="menu3">
+            <li><a href="">iphone</a></li>
+            <li><a href="">samsung</a></li>
+            <li><a href="">oppo</a></li>
+        </ul>
+
+        <li><a href="">Laptop</a></li>
+        <ul id="menu4">
+            <li><a href="">dell</a></li>
+            <li><a href="">hp</a></li>
+            <li><a href="">acer</a></li>
+        </ul>
+
+        <li><a href="">Phụ kiện</a></li>
+            <ul id="menu5">
+                <li><a href="">tai nghe</a></li>
+                <li><a href="">sạc dự phòng</a></li>
+                <li><a href="">ốp</a></li>
+            </ul>
+
+    </ul>
+    
+    
+    </li>
+    <li><a href="">Dịch vụ</a></li>
+    <li><a href="">Tin tức</a></li>
+</ul>
+    </div>
+    <div id="main"> 
+      <div id="content" class="box">
+        <h2 class="title">Nội dung trang web</h2>
+        <p>Đây là nội dung chính của trang web nó sử dụng
+            <b>id="content"</b>để định vị bố cục <b>class"box"</b>
+            để định dạng khung trắng</p>
+  <a href="class=btn">xem thêm</a>
+      </div>
+      <div id="sidebar" class="box">
+        <h2 class="title">sidebar</h2>
+       <p>Đây là phần sidebar. cũng dùng class box để có cùng phong cách với 
+        nội dung chính</p>
+        <a href=" class=btn">liên hệ</a>
+      </div>
+      
+      <div id="footer">
+     <p>&copy;2025-Nguyễn viết Hậu</p>
+      </div>
+    </div>
+</body>
+</html>
