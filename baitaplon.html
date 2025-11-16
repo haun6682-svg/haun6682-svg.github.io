@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="vi">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giới Thiệu Quán Trà Sữa</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .container {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Section */
+        .hero {
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin: 0 0 15px 0;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin: 0;
+            opacity: 0.95;
+        }
+
+        /* About Section */
+        .about {
+            background: #FFF5F7;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 36px;
+            color: #C06C84;
+            margin: 0 0 25px 0;
+        }
+
+        .about p {
+            font-size: 18px;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Menu Section */
+        .menu {
+            background: white;
+            padding: 60px 20px;
+        }
+
+        .menu h2 {
+            font-size: 36px;
+            color: #C06C84;
+            text-align: center;
+            margin: 0 0 40px 0;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .menu-item {
+            background: #FFF5F7;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #FFE5EC;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(192, 108, 132, 0.2);
+        }
+
+        .menu-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item h3 {
+            font-size: 24px;
+            color: #C06C84;
+            margin: 0 0 10px 0;
+        }
+
+        .menu-item p {
+            font-size: 16px;
+            color: #666;
+            margin: 0 0 15px 0;
+        }
+
+        .price {
+            font-size: 20px;
+            color: #FF6B9D;
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #C06C84 0%, #FF6B9D 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 36px;
+            margin: 0 0 30px 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .contact-item-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .contact-item h3 {
+            font-size: 20px;
+            margin: 0 0 10px 0;
+        }
+
+        .contact-item p {
+            font-size: 16px;
+            margin: 0;
+            opacity: 0.95;
+        }
+
+        /* Footer */
+        .footer {
+            background: #8B4C5C;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .about h2, .menu h2, .contact h2 {
+                font-size: 28px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container"><!-- Hero Section -->
+   <section class="hero">
+    <h1 id="shop-name">Trà Sữa của hậu</h1>
+    <p id="tagline">Hương vị tuyệt vời trong từng giọt</p>
+   </section><!-- About Section -->
+   <section class="about">
+    <h2 id="about-title">Về Chúng Tôi</h2>
+    <p id="about-text">Chào mừng bạn đến với quán trà sữa của chúng tôi! Chúng tôi tự hào mang đến những ly trà sữa thơm ngon, được pha chế từ nguyên liệu tươi ngon nhất. Với không gian ấm cúng và phong cách phục vụ chuyên nghiệp, chúng tôi cam kết mang đến trải nghiệm tuyệt vời nhất cho khách hàng.</p>
+   </section><!-- Menu Section -->
+   <section class="menu">
+    <h2 id="menu-title">Thực Đơn Đặc Biệt</h2>
+    <div class="menu-grid">
+     <div class="menu-item">
+      <div class="menu-icon">
+       🧋
+      </div>
+      <h3>Trà Sữa Trân Châu</h3>
+      <p>Trà sữa truyền thống với trân châu dai ngon</p>
+      <div class="price">
+       35.000đ
+      </div>
+     </div>
+     <div class="menu-item">
+      <div class="menu-icon">
+       🍵
+      </div>
+      <h3>Trà Sữa Matcha</h3>
+      <p>Vị matcha Nhật Bản thơm ngon đặc biệt</p>
+      <div class="price">
+       40.000đ
+      </div>
+     </div>
+     <div class="menu-item">
+      <div class="menu-icon">
+       🥤
+      </div>
+      <h3>Trà Sữa Socola</h3>
+      <p>Hòa quyện giữa trà sữa và socola ngọt ngào</p>
+      <div class="price">
+       38.000đ
+      </div>
+     </div>
+     <div class="menu-item">
+      <div class="menu-icon">
+       🍓
+      </div>
+      <h3>Trà Sữa Dâu</h3>
+      <p>Vị dâu tươi mát, ngọt dịu</p>
+      <div class="price">
+       42.000đ
+      </div>
+     </div>
+     <div class="menu-item">
+      <div class="menu-icon">
+       🍑
+      </div>
+      <h3>Trà Đào Cam Sả</h3>
+      <p>Sự kết hợp hoàn hảo của đào, cam và sả</p>
+      <div class="price">
+       45.000đ
+      </div>
+     </div>
+     <div class="menu-item">
+      <div class="menu-icon">
+       🥥
+      </div>
+      <h3>Trà Sữa Dừa</h3>
+      <p>Hương vị dừa tươi mát lạnh</p>
+      <div class="price">
+       40.000đ
+      </div>
+     </div>
+    </div>
+   </section><!-- Contact Section -->
+   <section class="contact">
+    <h2 id="contact-title">Liên Hệ Với Chúng Tôi</h2>
+    <div class="contact-info">
+     <div class="contact-item">
+      <div class="contact-item-icon">
+       📍
+      </div>
+      <h3>Địa Chỉ</h3>
+      <p id="address">Xã Sơn đồng, thành phố Hà Nội</p>
+     </div>
+     <div class="contact-item">
+      <div class="contact-item-icon">
+       📞
+      </div>
+      <h3>Điện Thoại</h3>
+      <p id="phone">0337205352</p>
+     </div>
+     <div class="contact-item">
+      <div class="contact-item-icon">
+       🕐
+      </div>
+      <h3>Giờ Mở Cửa</h3>
+      <p id="hours">8:00 - 22:00 hàng ngày</p>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="footer">
+    <p>© 2025 Trà Sữa của hậu. Tất cả quyền được bảo lưu.</p>
+   </footer>
+  </div>
+  <script>
+        const defaultConfig = {
+            background_color: "#FF6B9D",
+            surface_color: "#FFF5F7",
+            text_color: "#555555",
+            primary_action_color: "#C06C84",
+            secondary_action_color: "#FF6B9D",
+            font_family: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+            font_size: 16,
+            shop_name: "Trà Sữa Ngọt Ngào",
+            tagline: "Hương vị tuyệt vời trong từng giọt",
+            about_title: "Về Chúng Tôi",
+            about_text: "Chào mừng bạn đến với quán trà sữa của chúng tôi! Chúng tôi tự hào mang đến những ly trà sữa thơm ngon, được pha chế từ nguyên liệu tươi ngon nhất. Với không gian ấm cúng và phong cách phục vụ chuyên nghiệp, chúng tôi cam kết mang đến trải nghiệm tuyệt vời nhất cho khách hàng.",
+            menu_title: "Thực Đơn Đặc Biệt",
+            contact_title: "Liên Hệ Với Chúng Tôi",
+            address: "123 Đường Nguyễn Huệ, Quận 1, TP.HCM",
+            phone: "0123 456 789",
+            hours: "8:00 - 22:00 hàng ngày"
+        };
+
+        async function onConfigChange(config) {
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseFontStack = 'Arial, sans-serif';
+            const baseSize = config.font_size || defaultConfig.font_size;
+
+            // Apply font family
+            document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+            // Apply colors
+            const hero = document.querySelector('.hero');
+            const contact = document.querySelector('.contact');
+            hero.style.background = `linear-gradient(135deg, ${config.background_color || defaultConfig.background_color} 0%, ${config.primary_action_color || defaultConfig.primary_action_color} 100%)`;
+            contact.style.background = `linear-gradient(135deg, ${config.primary_action_color || defaultConfig.primary_action_color} 0%, ${config.background_color || defaultConfig.background_color} 100%)`;
+
+            const about = document.querySelector('.about');
+            about.style.backgroundColor = config.surface_color || defaultConfig.surface_color;
+
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.style.backgroundColor = config.surface_color || defaultConfig.surface_color;
+            });
+
+            const aboutTitle = document.querySelector('.about h2');
+            const menuTitle = document.querySelector('.menu h2');
+            aboutTitle.style.color = config.primary_action_color || defaultConfig.primary_action_color;
+            menuTitle.style.color = config.primary_action_color || defaultConfig.primary_action_color;
+
+            const menuItemTitles = document.querySelectorAll('.menu-item h3');
+            menuItemTitles.forEach(title => {
+                title.style.color = config.primary_action_color || defaultConfig.primary_action_color;
+            });
+
+            const prices = document.querySelectorAll('.price');
+            prices.forEach(price => {
+                price.style.color = config.secondary_action_color || defaultConfig.secondary_action_color;
+            });
+
+            const aboutText = document.querySelector('.about p');
+            const menuDescriptions = document.querySelectorAll('.menu-item p');
+            aboutText.style.color = config.text_color || defaultConfig.text_color;
+            menuDescriptions.forEach(desc => {
+                desc.style.color = config.text_color || defaultConfig.text_color;
+            });
+
+            // Apply font sizes
+            document.querySelector('.hero h1').style.fontSize = `${baseSize * 3}px`;
+            document.querySelector('.hero p').style.fontSize = `${baseSize * 1.25}px`;
+            document.querySelector('.about h2').style.fontSize = `${baseSize * 2.25}px`;
+            document.querySelector('.menu h2').style.fontSize = `${baseSize * 2.25}px`;
+            document.querySelector('.contact h2').style.fontSize = `${baseSize * 2.25}px`;
+            document.querySelector('.about p').style.fontSize = `${baseSize * 1.125}px`;
+            document.querySelectorAll('.menu-item h3').forEach(el => el.style.fontSize = `${baseSize * 1.5}px`);
+            document.querySelectorAll('.menu-item p').forEach(el => el.style.fontSize = `${baseSize}px`);
+            document.querySelectorAll('.price').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+            document.querySelectorAll('.contact-item h3').forEach(el => el.style.fontSize = `${baseSize * 1.25}px`);
+            document.querySelectorAll('.contact-item p').forEach(el => el.style.fontSize = `${baseSize}px`);
+
+            // Apply text content
+            document.getElementById('shop-name').textContent = config.shop_name || defaultConfig.shop_name;
+            document.getElementById('tagline').textContent = config.tagline || defaultConfig.tagline;
+            document.getElementById('about-title').textContent = config.about_title || defaultConfig.about_title;
+            document.getElementById('about-text').textContent = config.about_text || defaultConfig.about_text;
+            document.getElementById('menu-title').textContent = config.menu_title || defaultConfig.menu_title;
+            document.getElementById('contact-title').textContent = config.contact_title || defaultConfig.contact_title;
+            document.getElementById('address').textContent = config.address || defaultConfig.address;
+            document.getElementById('phone').textContent = config.phone || defaultConfig.phone;
+            document.getElementById('hours').textContent = config.hours || defaultConfig.hours;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                config.surface_color = value;
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                config.primary_action_color = value;
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                config.secondary_action_color = value;
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => config.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        if (window.elementSdk) {
+                            config.font_family = value;
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    }
+                },
+                fontSizeable: {
+                    get: () => config.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        if (window.elementSdk) {
+                            config.font_size = value;
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["shop_name", config.shop_name || defaultConfig.shop_name],
+                ["tagline", config.tagline || defaultConfig.tagline],
+                ["about_title", config.about_title || defaultConfig.about_title],
+                ["about_text", config.about_text || defaultConfig.about_text],
+                ["menu_title", config.menu_title || defaultConfig.menu_title],
+                ["contact_title", config.contact_title || defaultConfig.contact_title],
+                ["address", config.address || defaultConfig.address],
+                ["phone", config.phone || defaultConfig.phone],
+                ["hours", config.hours || defaultConfig.hours]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99bd807a33c61f2b',t:'MTc2MjY5MzMxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
