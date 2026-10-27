@@ -1,632 +1,652 @@
-# ==========================================================
-# CHƯƠNG TRÌNH QUẢN LÝ SINH VIÊN
-# Môn: Toán rời rạc
-# Ngôn ngữ: Python
-# ==========================================================
+# -*- coding: utf-8 -*-
+"""
+CHƯƠNG TRÌNH QUẢN LÝ RẠP CHIẾU PHIM
+Ngôn ngữ: Python 3.x
+Giao diện: Console
+Lưu trữ: các file TXT
+Cách chạy: python main.py
+"""
 
-FILE_NAME = "sinhvien.txt"
+import json
+import os
 
-# Danh sách sinh viên
-danh_sach_sv = []
+FILE_DATA = {
+    "phim": "phim.txt",
+    "phong": "phong.txt",
+    "suat_chieu": "suat_chieu.txt",
+    "khach_hang": "khach_hang.txt",
+    "ve": "ve.txt",
+}
 
-
-# ==========================================================
-# 1. XẾP LOẠI SINH VIÊN
-# ==========================================================
-
-def xep_loai(diem):
-    if diem >= 8:
-        return "Giỏi"
-    elif diem >= 6.5:
-        return "Khá"
-    elif diem >= 5:
-        return "Trung bình"
-    else:
-        return "Yếu"
-
-
-# ==========================================================
-# 2. KIỂM TRA ĐIỀU KIỆN DỰ THI
-# ==========================================================
-
-def du_dieu_kien_du_thi(diem, so_buoi_vang):
-    return diem >= 5 and so_buoi_vang <= 3
+danh_sach_phim = []
+danh_sach_phong = []
+danh_sach_suat_chieu = []
+danh_sach_khach_hang = []
+danh_sach_ve = []
 
 
-# ==========================================================
-# 3. NHẬP ĐIỂM
-# ==========================================================
+def nhap_chuoi(thong_bao, bat_buoc=True):
+    while True:
+        gia_tri = input(thong_bao).strip()
+        if gia_tri or not bat_buoc:
+            return gia_tri
+        print("Dữ liệu không được để trống.")
 
-def nhap_diem():
+
+def nhap_so_nguyen(thong_bao, toi_thieu=0):
     while True:
         try:
-            diem = float(input("Nhập điểm tổng kết (0 - 10): "))
-
-            if 0 <= diem <= 10:
-                return diem
-            else:
-                print("Lỗi: Điểm phải nằm trong khoảng từ 0 đến 10.")
-
+            gia_tri = int(input(thong_bao))
+            if gia_tri < toi_thieu:
+                print(f"Giá trị phải lớn hơn hoặc bằng {toi_thieu}.")
+                continue
+            return gia_tri
         except ValueError:
-            print("Lỗi: Điểm phải là một số.")
+            print("Vui lòng nhập số nguyên hợp lệ.")
 
 
-# ==========================================================
-# 4. NHẬP SỐ BUỔI VẮNG
-# ==========================================================
-
-def nhap_so_buoi_vang():
+def nhap_so_thuc(thong_bao, toi_thieu=0):
     while True:
         try:
-            so_buoi_vang = int(input("Nhập số buổi vắng: "))
-
-            if so_buoi_vang >= 0:
-                return so_buoi_vang
-            else:
-                print("Lỗi: Số buổi vắng không được âm.")
-
+            gia_tri = float(input(thong_bao))
+            if gia_tri < toi_thieu:
+                print(f"Giá trị phải lớn hơn hoặc bằng {toi_thieu}.")
+                continue
+            return gia_tri
         except ValueError:
-            print("Lỗi: Số buổi vắng phải là số nguyên.")
+            print("Vui lòng nhập số hợp lệ.")
 
 
-# ==========================================================
-# 5. THÊM SINH VIÊN
-# ==========================================================
+def tim_theo_ma(danh_sach, truong_ma, ma):
+    for doi_tuong in danh_sach:
+        if doi_tuong.get(truong_ma, "").lower() == ma.lower():
+            return doi_tuong
+    return None
 
-def them_sinh_vien():
-    print("\n========== THÊM SINH VIÊN ==========")
 
-    while True:
-        ho_ten = input("Nhập họ và tên: ").strip()
-
-        if ho_ten == "":
-            print("Lỗi: Họ tên không được để trống.")
-        else:
-            break
-
-    # Kiểm tra trùng tên
-    for sv in danh_sach_sv:
-        if sv["ho_ten"].lower() == ho_ten.lower():
-            print("Lỗi: Sinh viên này đã tồn tại.")
-            return
-
-    diem = nhap_diem()
-    so_buoi_vang = nhap_so_buoi_vang()
-
-    sinh_vien = {
-        "ho_ten": ho_ten,
-        "diem": diem,
-        "so_buoi_vang": so_buoi_vang
+def luu_du_lieu():
+    """Lưu mỗi danh sách vào một file TXT, dữ liệu ở dạng JSON."""
+    cac_danh_sach = {
+        "phim": danh_sach_phim,
+        "phong": danh_sach_phong,
+        "suat_chieu": danh_sach_suat_chieu,
+        "khach_hang": danh_sach_khach_hang,
+        "ve": danh_sach_ve,
     }
+    try:
+        for ten, du_lieu in cac_danh_sach.items():
+            with open(FILE_DATA[ten], "w", encoding="utf-8") as tep:
+                json.dump(du_lieu, tep, ensure_ascii=False, indent=4)
+        print("Đã lưu dữ liệu vào các file TXT.")
+    except OSError as loi:
+        print("Không thể lưu dữ liệu:", loi)
 
-    danh_sach_sv.append(sinh_vien)
 
-    print("=> Thêm sinh viên thành công!")
+def doc_du_lieu():
+    """Đọc dữ liệu từ các file TXT; file chưa tồn tại được bỏ qua."""
+    cac_danh_sach = {
+        "phim": danh_sach_phim,
+        "phong": danh_sach_phong,
+        "suat_chieu": danh_sach_suat_chieu,
+        "khach_hang": danh_sach_khach_hang,
+        "ve": danh_sach_ve,
+    }
+    for ten, danh_sach in cac_danh_sach.items():
+        try:
+            with open(FILE_DATA[ten], "r", encoding="utf-8") as tep:
+                du_lieu = json.load(tep)
+            if isinstance(du_lieu, list):
+                danh_sach.clear()
+                danh_sach.extend(du_lieu)
+        except FileNotFoundError:
+            continue
+        except (json.JSONDecodeError, OSError) as loi:
+            print(f"Không đọc được {FILE_DATA[ten]}: {loi}")
+    print("Đã đọc dữ liệu (các file chưa tồn tại sẽ được bỏ qua).")
 
 
-# ==========================================================
-# 6. HIỂN THỊ DANH SÁCH
-# ==========================================================
-
-def hien_thi_danh_sach():
-    print("\n================ DANH SÁCH SINH VIÊN ================")
-
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
+def them_phim():
+    ma = nhap_chuoi("Nhập mã phim: ")
+    if tim_theo_ma(danh_sach_phim, "ma_phim", ma):
+        print("Mã phim đã tồn tại!")
         return
+    phim = {
+        "ma_phim": ma,
+        "ten_phim": nhap_chuoi("Nhập tên phim: "),
+        "the_loai": nhap_chuoi("Nhập thể loại: "),
+        "thoi_luong": nhap_so_nguyen("Nhập thời lượng (phút): ", 1),
+        "gia_ve": nhap_so_thuc("Nhập giá vé (VNĐ): ", 0),
+    }
+    danh_sach_phim.append(phim)
+    print("Thêm phim thành công.")
 
-    print("-" * 90)
 
-    print(
-        f"{'STT':<5}"
-        f"{'Họ và tên':<25}"
-        f"{'Điểm':<10}"
-        f"{'Vắng':<10}"
-        f"{'Xếp loại':<18}"
-        f"{'Dự thi':<10}"
-    )
+def hien_thi_phim():
+    if not danh_sach_phim:
+        print("Danh sách phim đang trống.")
+        return
+    print("\n{:<12} {:<30} {:<22} {:>12} {:>15}".format(
+        "Mã phim", "Tên phim", "Thể loại", "Thời lượng", "Giá vé (VNĐ)"))
+    print("-" * 95)
+    for p in danh_sach_phim:
+        print("{:<12} {:<30} {:<22} {:>12} {:>15,.0f}".format(
+            p["ma_phim"], p["ten_phim"][:29], p["the_loai"][:21],
+            p["thoi_luong"], p["gia_ve"]))
 
-    print("-" * 90)
 
-    for i, sv in enumerate(danh_sach_sv, start=1):
+def cap_nhat_phim():
+    ma = nhap_chuoi("Nhập mã phim cần cập nhật: ")
+    phim = tim_theo_ma(danh_sach_phim, "ma_phim", ma)
+    if not phim:
+        print("Không tìm thấy phim.")
+        return
+    print("Nhập thông tin mới:")
+    phim["ten_phim"] = nhap_chuoi("Tên phim mới: ")
+    phim["the_loai"] = nhap_chuoi("Thể loại mới: ")
+    phim["thoi_luong"] = nhap_so_nguyen("Thời lượng mới (phút): ", 1)
+    phim["gia_ve"] = nhap_so_thuc("Giá vé mới (VNĐ): ", 0)
+    print("Cập nhật phim thành công.")
 
-        loai = xep_loai(sv["diem"])
 
-        if du_dieu_kien_du_thi(
-            sv["diem"],
-            sv["so_buoi_vang"]
-        ):
-            du_thi = "Đủ"
+def xoa_phim():
+    ma = nhap_chuoi("Nhập mã phim cần xóa: ")
+    phim = tim_theo_ma(danh_sach_phim, "ma_phim", ma)
+    if not phim:
+        print("Không tìm thấy phim.")
+        return
+    if any(s["ma_phim"] == ma for s in danh_sach_suat_chieu):
+        print("Không thể xóa: phim đang được dùng trong suất chiếu.")
+        return
+    danh_sach_phim.remove(phim)
+    print("Xóa phim thành công.")
+
+
+def tim_kiem_phim():
+    tu_khoa = nhap_chuoi("Nhập mã hoặc tên phim cần tìm: ").casefold()
+    ket_qua = [p for p in danh_sach_phim
+               if tu_khoa in p["ma_phim"].casefold()
+               or tu_khoa in p["ten_phim"].casefold()]
+    if not ket_qua:
+        print("Không tìm thấy phim.")
+        return
+    for p in ket_qua:
+        print(f'{p["ma_phim"]} | {p["ten_phim"]} | {p["the_loai"]} | '
+              f'{p["thoi_luong"]} phút | {p["gia_ve"]:,.0f} VNĐ')
+
+
+def menu_phim():
+    while True:
+        print("\n--- QUẢN LÝ PHIM ---")
+        print("1. Thêm phim\n2. Hiển thị phim\n3. Cập nhật phim")
+        print("4. Xóa phim\n5. Tìm kiếm phim\n0. Quay lại")
+        chon = input("Lựa chọn: ").strip()
+        if chon == "1":
+            them_phim()
+        elif chon == "2":
+            hien_thi_phim()
+        elif chon == "3":
+            cap_nhat_phim()
+        elif chon == "4":
+            xoa_phim()
+        elif chon == "5":
+            tim_kiem_phim()
+        elif chon == "0":
+            break
         else:
-            du_thi = "Không"
-
-        print(
-            f"{i:<5}"
-            f"{sv['ho_ten']:<25}"
-            f"{sv['diem']:<10.2f}"
-            f"{sv['so_buoi_vang']:<10}"
-            f"{loai:<18}"
-            f"{du_thi:<10}"
-        )
-
-    print("-" * 90)
+            print("Lựa chọn không hợp lệ.")
 
 
-# ==========================================================
-# 7. TÌM KIẾM SINH VIÊN
-# ==========================================================
-
-def tim_sinh_vien():
-    print("\n========== TÌM KIẾM SINH VIÊN ==========")
-
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
+def them_phong():
+    ma = nhap_chuoi("Nhập mã phòng: ")
+    if tim_theo_ma(danh_sach_phong, "ma_phong", ma):
+        print("Mã phòng đã tồn tại!")
         return
+    phong = {
+        "ma_phong": ma,
+        "ten_phong": nhap_chuoi("Nhập tên phòng: "),
+        "so_ghe": nhap_so_nguyen("Nhập tổng số ghế: ", 1),
+        "trang_thai": nhap_chuoi("Nhập trạng thái phòng (Hoạt động/Bảo trì): "),
+    }
+    danh_sach_phong.append(phong)
+    print("Thêm phòng thành công.")
 
-    tu_khoa = input(
-        "Nhập tên sinh viên cần tìm: "
-    ).strip().lower()
 
-    if tu_khoa == "":
-        print("Từ khóa tìm kiếm không được để trống.")
+def hien_thi_phong():
+    if not danh_sach_phong:
+        print("Danh sách phòng đang trống.")
         return
+    for p in danh_sach_phong:
+        print(f'{p["ma_phong"]} | {p["ten_phong"]} | {p["so_ghe"]} ghế | {p["trang_thai"]}')
 
-    ket_qua = []
 
-    for sv in danh_sach_sv:
-        if tu_khoa in sv["ho_ten"].lower():
-            ket_qua.append(sv)
-
-    if len(ket_qua) == 0:
-        print("Không tìm thấy sinh viên phù hợp.")
+def cap_nhat_phong():
+    ma = nhap_chuoi("Nhập mã phòng cần cập nhật: ")
+    p = tim_theo_ma(danh_sach_phong, "ma_phong", ma)
+    if not p:
+        print("Không tìm thấy phòng.")
         return
+    p["ten_phong"] = nhap_chuoi("Tên phòng mới: ")
+    p["so_ghe"] = nhap_so_nguyen("Số ghế mới: ", 1)
+    p["trang_thai"] = nhap_chuoi("Trạng thái mới: ")
+    print("Cập nhật phòng thành công.")
 
-    print("\n========== KẾT QUẢ TÌM KIẾM ==========")
 
-    print("-" * 90)
+def xoa_phong():
+    ma = nhap_chuoi("Nhập mã phòng cần xóa: ")
+    p = tim_theo_ma(danh_sach_phong, "ma_phong", ma)
+    if not p:
+        print("Không tìm thấy phòng.")
+        return
+    if any(s["ma_phong"] == ma for s in danh_sach_suat_chieu):
+        print("Không thể xóa: phòng đang được sử dụng trong suất chiếu.")
+        return
+    danh_sach_phong.remove(p)
+    print("Xóa phòng thành công.")
 
-    print(
-        f"{'STT':<5}"
-        f"{'Họ và tên':<25}"
-        f"{'Điểm':<10}"
-        f"{'Vắng':<10}"
-        f"{'Xếp loại':<18}"
-        f"{'Dự thi':<10}"
-    )
 
-    print("-" * 90)
-
-    for i, sv in enumerate(ket_qua, start=1):
-
-        loai = xep_loai(sv["diem"])
-
-        if du_dieu_kien_du_thi(
-            sv["diem"],
-            sv["so_buoi_vang"]
-        ):
-            du_thi = "Đủ"
+def menu_phong():
+    while True:
+        print("\n--- QUẢN LÝ PHÒNG CHIẾU ---")
+        print("1. Thêm phòng\n2. Hiển thị phòng\n3. Cập nhật phòng")
+        print("4. Xóa phòng\n0. Quay lại")
+        chon = input("Lựa chọn: ").strip()
+        if chon == "1":
+            them_phong()
+        elif chon == "2":
+            hien_thi_phong()
+        elif chon == "3":
+            cap_nhat_phong()
+        elif chon == "4":
+            xoa_phong()
+        elif chon == "0":
+            break
         else:
-            du_thi = "Không"
-
-        print(
-            f"{i:<5}"
-            f"{sv['ho_ten']:<25}"
-            f"{sv['diem']:<10.2f}"
-            f"{sv['so_buoi_vang']:<10}"
-            f"{loai:<18}"
-            f"{du_thi:<10}"
-        )
-
-    print("-" * 90)
+            print("Lựa chọn không hợp lệ.")
 
 
-# ==========================================================
-# 8. CẬP NHẬT SINH VIÊN
-# ==========================================================
-
-def cap_nhat_sinh_vien():
-    print("\n========== CẬP NHẬT SINH VIÊN ==========")
-
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
+def them_suat_chieu():
+    ma = nhap_chuoi("Nhập mã suất chiếu: ")
+    if tim_theo_ma(danh_sach_suat_chieu, "ma_suat", ma):
+        print("Mã suất chiếu đã tồn tại!")
         return
-
-    ten_can_sua = input(
-        "Nhập tên sinh viên cần cập nhật: "
-    ).strip()
-
-    for sv in danh_sach_sv:
-
-        if sv["ho_ten"].lower() == ten_can_sua.lower():
-
-            print("\n--- THÔNG TIN HIỆN TẠI ---")
-            print("Họ tên:", sv["ho_ten"])
-            print("Điểm:", sv["diem"])
-            print("Số buổi vắng:", sv["so_buoi_vang"])
-
-            print("\n--- NHẬP THÔNG TIN MỚI ---")
-
-            while True:
-                ho_ten_moi = input(
-                    "Nhập họ và tên mới: "
-                ).strip()
-
-                if ho_ten_moi != "":
-                    break
-
-                print("Lỗi: Họ tên không được để trống.")
-
-            diem_moi = nhap_diem()
-
-            vang_moi = nhap_so_buoi_vang()
-
-            sv["ho_ten"] = ho_ten_moi
-            sv["diem"] = diem_moi
-            sv["so_buoi_vang"] = vang_moi
-
-            print("=> Cập nhật sinh viên thành công!")
-            return
-
-    print("Không tìm thấy sinh viên cần cập nhật.")
-
-
-# ==========================================================
-# 9. XÓA SINH VIÊN
-# ==========================================================
-
-def xoa_sinh_vien():
-    print("\n========== XÓA SINH VIÊN ==========")
-
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
+    ma_phim = nhap_chuoi("Nhập mã phim: ")
+    phim = tim_theo_ma(danh_sach_phim, "ma_phim", ma_phim)
+    if not phim:
+        print("Mã phim không tồn tại.")
         return
-
-    ten_can_xoa = input(
-        "Nhập tên sinh viên cần xóa: "
-    ).strip()
-
-    for sv in danh_sach_sv:
-
-        if sv["ho_ten"].lower() == ten_can_xoa.lower():
-
-            xac_nhan = input(
-                "Bạn có chắc chắn muốn xóa? (y/n): "
-            ).strip().lower()
-
-            if xac_nhan == "y":
-                danh_sach_sv.remove(sv)
-                print("=> Xóa sinh viên thành công!")
-            else:
-                print("=> Đã hủy thao tác xóa.")
-
-            return
-
-    print("Không tìm thấy sinh viên cần xóa.")
-
-
-# ==========================================================
-# 10. SẮP XẾP SINH VIÊN
-# ==========================================================
-
-def sap_xep_sinh_vien():
-    print("\n========== SẮP XẾP SINH VIÊN ==========")
-
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
+    ma_phong = nhap_chuoi("Nhập mã phòng: ")
+    phong = tim_theo_ma(danh_sach_phong, "ma_phong", ma_phong)
+    if not phong:
+        print("Mã phòng không tồn tại.")
         return
+    if phong["trang_thai"].casefold() not in ("hoạt động", "hoat dong", "active"):
+        print("Phòng không ở trạng thái hoạt động.")
+        return
+    suat = {
+        "ma_suat": ma,
+        "ma_phim": phim["ma_phim"],
+        "ma_phong": phong["ma_phong"],
+        "ngay_chieu": nhap_chuoi("Nhập ngày chiếu (VD 21/09/2026): "),
+        "gio_chieu": nhap_chuoi("Nhập giờ chiếu (VD 19:30): "),
+    }
+    danh_sach_suat_chieu.append(suat)
+    print("Thêm suất chiếu thành công.")
 
-    danh_sach_sv.sort(
-        key=lambda sv: sv["diem"],
-        reverse=True
-    )
 
-    print("=> Đã sắp xếp theo điểm giảm dần.")
+def hien_thi_suat_chieu():
+    if not danh_sach_suat_chieu:
+        print("Danh sách suất chiếu đang trống.")
+        return
+    for s in danh_sach_suat_chieu:
+        phim = tim_theo_ma(danh_sach_phim, "ma_phim", s["ma_phim"])
+        phong = tim_theo_ma(danh_sach_phong, "ma_phong", s["ma_phong"])
+        ten_phim = phim["ten_phim"] if phim else "Không rõ"
+        ten_phong = phong["ten_phong"] if phong else "Không rõ"
+        print(f'{s["ma_suat"]} | {ten_phim} | {ten_phong} | '
+              f'{s["ngay_chieu"]} {s["gio_chieu"]}')
 
-    hien_thi_danh_sach()
+
+def cap_nhat_suat_chieu():
+    ma = nhap_chuoi("Nhập mã suất chiếu cần cập nhật: ")
+    s = tim_theo_ma(danh_sach_suat_chieu, "ma_suat", ma)
+    if not s:
+        print("Không tìm thấy suất chiếu.")
+        return
+    ma_phim = nhap_chuoi("Mã phim mới: ")
+    phim = tim_theo_ma(danh_sach_phim, "ma_phim", ma_phim)
+    ma_phong = nhap_chuoi("Mã phòng mới: ")
+    phong = tim_theo_ma(danh_sach_phong, "ma_phong", ma_phong)
+    if not phim or not phong:
+        print("Mã phim hoặc mã phòng không tồn tại.")
+        return
+    s["ma_phim"] = phim["ma_phim"]
+    s["ma_phong"] = phong["ma_phong"]
+    s["ngay_chieu"] = nhap_chuoi("Ngày chiếu mới: ")
+    s["gio_chieu"] = nhap_chuoi("Giờ chiếu mới: ")
+    print("Cập nhật suất chiếu thành công.")
 
 
-# ==========================================================
-# 11. THỐNG KÊ SINH VIÊN
-# ==========================================================
+def xoa_suat_chieu():
+    ma = nhap_chuoi("Nhập mã suất chiếu cần xóa: ")
+    s = tim_theo_ma(danh_sach_suat_chieu, "ma_suat", ma)
+    if not s:
+        print("Không tìm thấy suất chiếu.")
+        return
+    if any(v["ma_suat"] == ma and v["trang_thai"] == "Da dat" for v in danh_sach_ve):
+        print("Không thể xóa suất chiếu đang có vé đã đặt.")
+        return
+    danh_sach_suat_chieu.remove(s)
+    print("Xóa suất chiếu thành công.")
+
+
+def tim_kiem_suat_chieu():
+    tu_khoa = nhap_chuoi("Nhập mã suất, mã phim hoặc ngày chiếu: ").casefold()
+    ket_qua = [s for s in danh_sach_suat_chieu
+               if tu_khoa in s["ma_suat"].casefold()
+               or tu_khoa in s["ma_phim"].casefold()
+               or tu_khoa in s["ngay_chieu"].casefold()]
+    if not ket_qua:
+        print("Không tìm thấy suất chiếu.")
+    else:
+        for s in ket_qua:
+            print(s)
+
+
+def menu_suat_chieu():
+    while True:
+        print("\n--- QUẢN LÝ SUẤT CHIẾU ---")
+        print("1. Thêm suất chiếu\n2. Hiển thị suất chiếu")
+        print("3. Cập nhật suất chiếu\n4. Xóa suất chiếu")
+        print("5. Tìm kiếm suất chiếu\n0. Quay lại")
+        chon = input("Lựa chọn: ").strip()
+        if chon == "1":
+            them_suat_chieu()
+        elif chon == "2":
+            hien_thi_suat_chieu()
+        elif chon == "3":
+            cap_nhat_suat_chieu()
+        elif chon == "4":
+            xoa_suat_chieu()
+        elif chon == "5":
+            tim_kiem_suat_chieu()
+        elif chon == "0":
+            break
+        else:
+            print("Lựa chọn không hợp lệ.")
+
+
+def them_khach_hang():
+    ma = nhap_chuoi("Nhập mã khách hàng: ")
+    if tim_theo_ma(danh_sach_khach_hang, "ma_khach", ma):
+        print("Mã khách hàng đã tồn tại!")
+        return
+    so_dien_thoai = nhap_chuoi("Nhập số điện thoại: ")
+    if not so_dien_thoai.isdigit() or not 9 <= len(so_dien_thoai) <= 11:
+        print("Số điện thoại phải gồm 9 đến 11 chữ số.")
+        return
+    email = nhap_chuoi("Nhập email: ")
+    kh = {
+        "ma_khach": ma,
+        "ho_ten": nhap_chuoi("Nhập họ tên: "),
+        "so_dien_thoai": so_dien_thoai,
+        "email": email,
+    }
+    danh_sach_khach_hang.append(kh)
+    print("Thêm khách hàng thành công.")
+
+
+def hien_thi_khach_hang():
+    if not danh_sach_khach_hang:
+        print("Danh sách khách hàng đang trống.")
+        return
+    for kh in danh_sach_khach_hang:
+        print(f'{kh["ma_khach"]} | {kh["ho_ten"]} | '
+              f'{kh["so_dien_thoai"]} | {kh["email"]}')
+
+
+def cap_nhat_khach_hang():
+    ma = nhap_chuoi("Nhập mã khách hàng cần cập nhật: ")
+    kh = tim_theo_ma(danh_sach_khach_hang, "ma_khach", ma)
+    if not kh:
+        print("Không tìm thấy khách hàng.")
+        return
+    kh["ho_ten"] = nhap_chuoi("Họ tên mới: ")
+    so_dt = nhap_chuoi("Số điện thoại mới: ")
+    if not so_dt.isdigit() or not 9 <= len(so_dt) <= 11:
+        print("Số điện thoại không hợp lệ; giữ nguyên số cũ.")
+    else:
+        kh["so_dien_thoai"] = so_dt
+    kh["email"] = nhap_chuoi("Email mới: ")
+    print("Cập nhật khách hàng thành công.")
+
+
+def xoa_khach_hang():
+    ma = nhap_chuoi("Nhập mã khách hàng cần xóa: ")
+    kh = tim_theo_ma(danh_sach_khach_hang, "ma_khach", ma)
+    if not kh:
+        print("Không tìm thấy khách hàng.")
+        return
+    if any(v["ma_khach"] == ma for v in danh_sach_ve):
+        print("Không thể xóa khách hàng đã có thông tin vé.")
+        return
+    danh_sach_khach_hang.remove(kh)
+    print("Xóa khách hàng thành công.")
+
+
+def tim_kiem_khach_hang():
+    tu_khoa = nhap_chuoi("Nhập mã hoặc tên khách hàng: ").casefold()
+    ket_qua = [kh for kh in danh_sach_khach_hang
+               if tu_khoa in kh["ma_khach"].casefold()
+               or tu_khoa in kh["ho_ten"].casefold()]
+    if not ket_qua:
+        print("Không tìm thấy khách hàng.")
+    else:
+        for kh in ket_qua:
+            print(f'{kh["ma_khach"]} | {kh["ho_ten"]} | '
+                  f'{kh["so_dien_thoai"]} | {kh["email"]}')
+
+
+def dat_ve():
+    ma_khach = nhap_chuoi("Nhập mã khách hàng: ")
+    kh = tim_theo_ma(danh_sach_khach_hang, "ma_khach", ma_khach)
+    if not kh:
+        print("Khách hàng không tồn tại. Vui lòng thêm khách hàng trước.")
+        return
+    ma_suat = nhap_chuoi("Nhập mã suất chiếu: ")
+    suat = tim_theo_ma(danh_sach_suat_chieu, "ma_suat", ma_suat)
+    if not suat:
+        print("Suất chiếu không tồn tại.")
+        return
+    phong = tim_theo_ma(danh_sach_phong, "ma_phong", suat["ma_phong"])
+    if not phong:
+        print("Không tìm thấy phòng của suất chiếu.")
+        return
+    so_ghe = nhap_chuoi("Nhập số ghế (VD A05): ").upper()
+    if not so_ghe:
+        print("Số ghế không hợp lệ.")
+        return
+    so_ve_ghe = sum(1 for v in danh_sach_ve
+                    if v["ma_suat"] == ma_suat and v["so_ghe"].upper() == so_ghe
+                    and v["trang_thai"] == "Da dat")
+    if so_ve_ghe:
+        print("Ghế này đã được đặt cho suất chiếu.")
+        return
+    if len([c for c in so_ghe if c.isdigit()]) == 0:
+        print("Số ghế cần có ít nhất một chữ số, ví dụ A05.")
+        return
+    ma_ve = nhap_chuoi("Nhập mã vé: ")
+    if tim_theo_ma(danh_sach_ve, "ma_ve", ma_ve):
+        print("Mã vé đã tồn tại.")
+        return
+    phim = tim_theo_ma(danh_sach_phim, "ma_phim", suat["ma_phim"])
+    gia = phim["gia_ve"] if phim else 0
+    ve = {
+        "ma_ve": ma_ve,
+        "ma_khach": kh["ma_khach"],
+        "ma_suat": suat["ma_suat"],
+        "so_ghe": so_ghe,
+        "gia_ve": gia,
+        "trang_thai": "Da dat",
+    }
+    danh_sach_ve.append(ve)
+    luu_du_lieu()
+    print(f"Đặt vé thành công. Giá vé: {gia:,.0f} VNĐ.")
+
+
+def huy_ve():
+    ma = nhap_chuoi("Nhập mã vé cần hủy: ")
+    ve = tim_theo_ma(danh_sach_ve, "ma_ve", ma)
+    if not ve:
+        print("Không tìm thấy vé.")
+        return
+    if ve["trang_thai"] != "Da dat":
+        print("Vé này đã được hủy trước đó.")
+        return
+    ve["trang_thai"] = "Da huy"
+    luu_du_lieu()
+    print("Hủy vé thành công.")
+
+
+def hien_thi_ve():
+    if not danh_sach_ve:
+        print("Danh sách vé đang trống.")
+        return
+    for v in danh_sach_ve:
+        kh = tim_theo_ma(danh_sach_khach_hang, "ma_khach", v["ma_khach"])
+        suat = tim_theo_ma(danh_sach_suat_chieu, "ma_suat", v["ma_suat"])
+        ten_khach = kh["ho_ten"] if kh else "Không rõ"
+        ngay_gio = f'{suat["ngay_chieu"]} {suat["gio_chieu"]}' if suat else "Không rõ"
+        print(f'{v["ma_ve"]} | Khách: {ten_khach} | Suất: {v["ma_suat"]} '
+              f'({ngay_gio}) | Ghế: {v["so_ghe"]} | '
+              f'{v["gia_ve"]:,.0f} VNĐ | {v["trang_thai"]}')
+
+
+def tim_kiem_ve():
+    tu_khoa = nhap_chuoi("Nhập mã vé hoặc mã khách hàng: ").casefold()
+    ket_qua = [v for v in danh_sach_ve
+               if tu_khoa in v["ma_ve"].casefold()
+               or tu_khoa in v["ma_khach"].casefold()]
+    if not ket_qua:
+        print("Không tìm thấy vé.")
+    else:
+        for v in ket_qua:
+            print(v)
+
 
 def thong_ke():
-    print("\n========== THỐNG KÊ SINH VIÊN ==========")
+    tong_ve_hop_le = sum(1 for v in danh_sach_ve if v["trang_thai"] == "Da dat")
+    doanh_thu = sum(v["gia_ve"] for v in danh_sach_ve if v["trang_thai"] == "Da dat")
+    print("\n========== THỐNG KÊ ==========")
+    print("Tổng số phim:", len(danh_sach_phim))
+    print("Tổng số phòng:", len(danh_sach_phong))
+    print("Tổng số suất chiếu:", len(danh_sach_suat_chieu))
+    print("Tổng số khách hàng:", len(danh_sach_khach_hang))
+    print("Tổng số vé đã đặt:", tong_ve_hop_le)
+    print(f"Doanh thu từ vé đã đặt: {doanh_thu:,.0f} VNĐ")
+    print("===============================")
 
-    if len(danh_sach_sv) == 0:
-        print("Danh sách sinh viên đang trống.")
-        return
 
-    tong_so = len(danh_sach_sv)
-
-    tong_diem = sum(
-        sv["diem"] for sv in danh_sach_sv
-    )
-
-    diem_trung_binh = tong_diem / tong_so
-
-    so_gioi = 0
-    so_kha = 0
-    so_trung_binh = 0
-    so_yeu = 0
-
-    so_du_thi = 0
-    so_khong_du_thi = 0
-
-    for sv in danh_sach_sv:
-
-        loai = xep_loai(sv["diem"])
-
-        if loai == "Giỏi":
-            so_gioi += 1
-
-        elif loai == "Khá":
-            so_kha += 1
-
-        elif loai == "Trung bình":
-            so_trung_binh += 1
-
+def menu_khach_hang():
+    while True:
+        print("\n--- QUẢN LÝ KHÁCH HÀNG ---")
+        print("1. Thêm khách hàng\n2. Hiển thị khách hàng")
+        print("3. Cập nhật khách hàng\n4. Xóa khách hàng")
+        print("5. Tìm kiếm khách hàng\n0. Quay lại")
+        chon = input("Lựa chọn: ").strip()
+        if chon == "1":
+            them_khach_hang()
+        elif chon == "2":
+            hien_thi_khach_hang()
+        elif chon == "3":
+            cap_nhat_khach_hang()
+        elif chon == "4":
+            xoa_khach_hang()
+        elif chon == "5":
+            tim_kiem_khach_hang()
+        elif chon == "0":
+            break
         else:
-            so_yeu += 1
+            print("Lựa chọn không hợp lệ.")
 
-        if du_dieu_kien_du_thi(
-            sv["diem"],
-            sv["so_buoi_vang"]
-        ):
-            so_du_thi += 1
+
+def menu_ve():
+    while True:
+        print("\n--- QUẢN LÝ VÉ ---")
+        print("1. Đặt vé\n2. Hủy vé\n3. Hiển thị vé\n4. Tìm kiếm vé\n0. Quay lại")
+        chon = input("Lựa chọn: ").strip()
+        if chon == "1":
+            dat_ve()
+        elif chon == "2":
+            huy_ve()
+        elif chon == "3":
+            hien_thi_ve()
+        elif chon == "4":
+            tim_kiem_ve()
+        elif chon == "0":
+            break
         else:
-            so_khong_du_thi += 1
-
-    print("\n--- KẾT QUẢ THỐNG KÊ ---")
-
-    print("Tổng số sinh viên:", tong_so)
-
-    print(
-        f"Điểm trung bình: {diem_trung_binh:.2f}"
-    )
-
-    print("\n--- XẾP LOẠI ---")
-    print("Giỏi:", so_gioi)
-    print("Khá:", so_kha)
-    print("Trung bình:", so_trung_binh)
-    print("Yếu:", so_yeu)
-
-    print("\n--- ĐIỀU KIỆN DỰ THI ---")
-    print(
-        "Đủ điều kiện dự thi:",
-        so_du_thi
-    )
-
-    print(
-        "Không đủ điều kiện dự thi:",
-        so_khong_du_thi
-    )
+            print("Lựa chọn không hợp lệ.")
 
 
-# ==========================================================
-# 12. LƯU DỮ LIỆU VÀO FILE TXT
-# ==========================================================
+def tim_kiem_tong_hop():
+    print("\n--- TÌM KIẾM VÀ TRA CỨU ---")
+    print("1. Tìm phim\n2. Tìm suất chiếu\n3. Tìm khách hàng\n4. Tìm vé")
+    chon = input("Lựa chọn: ").strip()
+    if chon == "1":
+        tim_kiem_phim()
+    elif chon == "2":
+        tim_kiem_suat_chieu()
+    elif chon == "3":
+        tim_kiem_khach_hang()
+    elif chon == "4":
+        tim_kiem_ve()
+    else:
+        print("Lựa chọn không hợp lệ.")
 
-def luu_file():
-
-    try:
-
-        with open(
-            FILE_NAME,
-            "w",
-            encoding="utf-8"
-        ) as file:
-
-            for sv in danh_sach_sv:
-
-                file.write(
-                    f"{sv['ho_ten']}|"
-                    f"{sv['diem']}|"
-                    f"{sv['so_buoi_vang']}\n"
-                )
-
-        print(
-            "=> Đã lưu dữ liệu vào file:",
-            FILE_NAME
-        )
-
-    except Exception as e:
-
-        print(
-            "Lỗi khi lưu file:",
-            e
-        )
-
-
-# ==========================================================
-# 13. ĐỌC DỮ LIỆU TỪ FILE TXT
-# ==========================================================
-
-def doc_file():
-
-    global danh_sach_sv
-
-    try:
-
-        with open(
-            FILE_NAME,
-            "r",
-            encoding="utf-8"
-        ) as file:
-
-            danh_sach_sv.clear()
-
-            for line in file:
-
-                line = line.strip()
-
-                if line == "":
-                    continue
-
-                parts = line.split("|")
-
-                if len(parts) != 3:
-                    continue
-
-                ho_ten = parts[0]
-
-                diem = float(parts[1])
-
-                so_buoi_vang = int(parts[2])
-
-                sinh_vien = {
-                    "ho_ten": ho_ten,
-                    "diem": diem,
-                    "so_buoi_vang": so_buoi_vang
-                }
-
-                danh_sach_sv.append(
-                    sinh_vien
-                )
-
-        print(
-            "=> Đã đọc dữ liệu từ file thành công."
-        )
-
-    except FileNotFoundError:
-
-        print(
-            "Chưa có file dữ liệu."
-        )
-
-        print(
-            "Chương trình sẽ bắt đầu với danh sách rỗng."
-        )
-
-    except ValueError:
-
-        print(
-            "Lỗi: Dữ liệu trong file không hợp lệ."
-        )
-
-    except Exception as e:
-
-        print(
-            "Lỗi khi đọc file:",
-            e
-        )
-
-
-# ==========================================================
-# 14. HIỂN THỊ MENU
-# ==========================================================
-
-def hien_thi_menu():
-
-    print("\n")
-
-    print("=" * 60)
-
-    print(
-        "           CHƯƠNG TRÌNH QUẢN LÝ SINH VIÊN"
-    )
-
-    print("=" * 60)
-
-    print("1. Thêm sinh viên")
-
-    print("2. Hiển thị danh sách sinh viên")
-
-    print("3. Cập nhật sinh viên")
-
-    print("4. Xóa sinh viên")
-
-    print("5. Tìm kiếm sinh viên")
-
-    print("6. Sắp xếp sinh viên theo điểm")
-
-    print("7. Thống kê sinh viên")
-
-    print("8. Lưu dữ liệu vào file")
-
-    print("9. Đọc dữ liệu từ file")
-
-    print("0. Thoát")
-
-    print("=" * 60)
-
-
-# ==========================================================
-# 15. CHƯƠNG TRÌNH CHÍNH
-# ==========================================================
 
 def main():
-
-    # Đọc dữ liệu cũ khi khởi động
-    doc_file()
-
+    doc_du_lieu()
     while True:
+        print("\n" + "=" * 55)
+        print("       CHƯƠNG TRÌNH QUẢN LÝ RẠP CHIẾU PHIM")
+        print("=" * 55)
+        print("1. Quản lý phim")
+        print("2. Quản lý phòng chiếu")
+        print("3. Quản lý suất chiếu")
+        print("4. Quản lý khách hàng")
+        print("5. Quản lý vé")
+        print("6. Tìm kiếm và tra cứu")
+        print("7. Thống kê")
+        print("8. Lưu dữ liệu")
+        print("9. Đọc dữ liệu")
+        print("0. Thoát")
+        chon = input("Lựa chọn: ").strip()
 
-        hien_thi_menu()
-
-        lua_chon = input(
-            "Nhập lựa chọn của bạn: "
-        ).strip()
-
-        if lua_chon == "1":
-
-            them_sinh_vien()
-
-        elif lua_chon == "2":
-
-            hien_thi_danh_sach()
-
-        elif lua_chon == "3":
-
-            cap_nhat_sinh_vien()
-
-        elif lua_chon == "4":
-
-            xoa_sinh_vien()
-
-        elif lua_chon == "5":
-
-            tim_sinh_vien()
-
-        elif lua_chon == "6":
-
-            sap_xep_sinh_vien()
-
-        elif lua_chon == "7":
-
+        if chon == "1":
+            menu_phim()
+        elif chon == "2":
+            menu_phong()
+        elif chon == "3":
+            menu_suat_chieu()
+        elif chon == "4":
+            menu_khach_hang()
+        elif chon == "5":
+            menu_ve()
+        elif chon == "6":
+            tim_kiem_tong_hop()
+        elif chon == "7":
             thong_ke()
-
-        elif lua_chon == "8":
-
-            luu_file()
-
-        elif lua_chon == "9":
-
-            doc_file()
-
-        elif lua_chon == "0":
-
-            print("\nĐang lưu dữ liệu trước khi thoát...")
-
-            luu_file()
-
-            print("Chương trình kết thúc.")
-
+        elif chon == "8":
+            luu_du_lieu()
+        elif chon == "9":
+            doc_du_lieu()
+        elif chon == "0":
+            luu_du_lieu()
+            print("Đã lưu dữ liệu. Kết thúc chương trình.")
             break
-
         else:
+            print("Lựa chọn không hợp lệ. Vui lòng nhập lại.")
 
-            print(
-                "Lỗi: Lựa chọn không hợp lệ."
-            )
-
-            print(
-                "Vui lòng chọn từ 0 đến 9."
-            )
-
-
-# ==========================================================
-# CHẠY CHƯƠNG TRÌNH
-# ==========================================================
 
 if __name__ == "__main__":
     main()
